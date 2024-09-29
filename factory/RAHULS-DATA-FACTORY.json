@@ -1,0 +1,9 @@
+{
+	"name": "RAHULS-DATA-FACTORY",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2a6c7bfc-afa6-47a9-b596-93f2c7cefd0a",
+		"tenantId": "eb7ee252-bf46-44a4-8953-9a29cca3a71f"
+	}
+}

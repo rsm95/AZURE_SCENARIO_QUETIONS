@@ -1,0 +1,32 @@
+{
+	"name": "ds_lookup_dynamic_path_filecount_scenario",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adls2_copy_act",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"enter_file_name": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().enter_file_name",
+					"type": "Expression"
+				},
+				"folderPath": "mnofolder",
+				"container": "inputs"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

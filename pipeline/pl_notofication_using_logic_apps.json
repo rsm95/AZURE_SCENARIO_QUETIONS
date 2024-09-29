@@ -20,6 +20,7 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "mnhbkb",
 							"wildcardFileName": "abbbbbbb.*",
 							"enablePartitionDiscovery": false
 						},
@@ -68,7 +69,7 @@
 					{
 						"activity": "Copy data1",
 						"dependencyConditions": [
-							"Succeeded"
+							"Failed"
 						]
 					}
 				],
@@ -84,7 +85,7 @@
 					"method": "POST",
 					"url": "https://prod-27.westindia.logic.azure.com:443/workflows/8bdfae8b9a7b4101bcc5391516630775/triggers/When_a_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_a_HTTP_request_is_received%2Frun&sv=1.0&sig=r0109fIdZbN_bSBBdD756e-dTsjcWRBsRLx1QYCFBMI",
 					"body": {
-						"value": "{\n    \"pipeline_name\" : \"@{pipeline().Pipeline}\",\n    \"pipeline_id\" : \"@{pipeline().RunId}\",\n    \"datafactory_name\" : \"@{pipeline().DataFactory}\",\n    \"error_code\" : \"activity('Copy data1').output.Error.ErrorCode}\"\n}\n",
+						"value": "{\n    \"pipeline_name\" : \"@{pipeline().Pipeline}\",\n    \"pipeline_id\" : \"@{pipeline().RunId}\",\n    \"datafactory_name\" : \"@{pipeline().DataFactory}\",\n    \"error_code\" : \"@{activity('Copy data1').output.errors.Message}}\"\n}\n",
 						"type": "Expression"
 					}
 				}

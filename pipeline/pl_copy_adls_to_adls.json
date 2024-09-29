@@ -102,7 +102,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@lessOrEquals(activity('Lookup1').output.count,10)",
+									"value": "@lessOrEquals(activity('Lookup1').output.count,15)",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [

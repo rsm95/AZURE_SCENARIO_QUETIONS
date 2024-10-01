@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "pipeline2",
 	"properties": {
 		"activities": [
 			{
@@ -20,8 +20,7 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"childItems",
-						"lastModified"
+						"childItems"
 					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
@@ -64,7 +63,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Get Metadata for Folder",
+										"name": "Process Folder",
 										"type": "GetMetadata",
 										"dependsOn": [],
 										"policy": {
@@ -78,43 +77,25 @@
 										"typeProperties": {
 											"dataset": {
 												"referenceName": "ds_last_modified_each_folder",
-												"type": "DatasetReference",
-												"parameters": {
-													"subfolder": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
+												"type": "DatasetReference"
 											},
 											"fieldList": [
-												"lastModified",
 												"childItems"
 											],
 											"storeSettings": {
-												"type": "AzureBlobFSReadSettings",
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
 												"enablePartitionDiscovery": false
 											},
 											"formatSettings": {
 												"type": "DelimitedTextReadSettings"
 											}
 										}
-									},
-									{
-										"name": "Execute Pipeline1",
-										"type": "ExecutePipeline",
-										"dependsOn": [],
-										"policy": {
-											"secureInput": false
-										},
-										"userProperties": [],
-										"typeProperties": {
-											"waitOnCompletion": true
-										}
 									}
 								],
 								"ifTrueActivities": [
 									{
-										"name": "Get Metadata for File",
+										"name": "Process File",
 										"type": "GetMetadata",
 										"dependsOn": [],
 										"policy": {
@@ -128,13 +109,7 @@
 										"typeProperties": {
 											"dataset": {
 												"referenceName": "ds_last_modified_each_file",
-												"type": "DatasetReference",
-												"parameters": {
-													"file_name": {
-														"value": "@item().name",
-														"type": "Expression"
-													}
-												}
+												"type": "DatasetReference"
 											},
 											"fieldList": [
 												"lastModified"
@@ -147,6 +122,65 @@
 											"formatSettings": {
 												"type": "DelimitedTextReadSettings"
 											}
+										}
+									}
+								]
+							}
+						},
+						{
+							"name": "ForEach Subfolder",
+							"type": "ForEach",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@activity('Process Folder').output.childItems",
+									"type": "Expression"
+								},
+								"isSequential": true,
+								"activities": [
+									{
+										"name": "Recursive If Condition",
+										"type": "IfCondition",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"expression": {
+												"value": "@equals(item().type, 'File')",
+												"type": "Expression"
+											},
+											"ifTrueActivities": [
+												{
+													"name": "Process Subfolder File",
+													"type": "GetMetadata",
+													"dependsOn": [],
+													"policy": {
+														"timeout": "0.12:00:00",
+														"retry": 0,
+														"retryIntervalInSeconds": 30,
+														"secureOutput": false,
+														"secureInput": false
+													},
+													"userProperties": [],
+													"typeProperties": {
+														"dataset": {
+															"referenceName": "ds_last_modified_each_file",
+															"type": "DatasetReference"
+														},
+														"fieldList": [
+															"lastModified"
+														],
+														"storeSettings": {
+															"type": "AzureBlobStorageReadSettings",
+															"recursive": true,
+															"enablePartitionDiscovery": false
+														},
+														"formatSettings": {
+															"type": "DelimitedTextReadSettings"
+														}
+													}
+												}
+											]
 										}
 									}
 								]

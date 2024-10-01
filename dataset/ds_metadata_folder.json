@@ -1,0 +1,63 @@
+{
+	"name": "ds_metadata_folder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "inputs"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Activity name",
+				"type": "String"
+			},
+			{
+				"name": "Activity status",
+				"type": "String"
+			},
+			{
+				"name": "Error",
+				"type": "String"
+			},
+			{
+				"name": "Activity type",
+				"type": "String"
+			},
+			{
+				"name": "Run start",
+				"type": "String"
+			},
+			{
+				"name": "Duration",
+				"type": "String"
+			},
+			{
+				"name": "Integration runtime",
+				"type": "String"
+			},
+			{
+				"name": "User properties",
+				"type": "String"
+			},
+			{
+				"name": "Activity run ID",
+				"type": "String"
+			},
+			{
+				"name": "Log",
+				"type": "String"
+			}
+		]
+	}
+}
